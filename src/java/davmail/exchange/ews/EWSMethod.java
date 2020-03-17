@@ -848,14 +848,12 @@ public abstract class EWSMethod extends PostMethod {
             while (reader.hasNext() &&
                     !((event == XMLStreamConstants.END_ELEMENT && localName.equals(reader.getLocalName())))) {
                 event = reader.next();
-                if (event == XMLStreamConstants.CHARACTERS) {
-                    result.append(reader.getText());
-                } else if ("MessageXml".equals(localName) && event == XMLStreamConstants.START_ELEMENT) {
-                    for (int i = 0;i<reader.getAttributeCount();i++) {
-                        if (result.length() > 0) {
-                            result.append(", ");
-                        }
-                        result.append(reader.getAttributeLocalName(i)).append(": ").append(reader.getAttributeValue(i));
+
+		if (("MessageXml").equals(localName)) {
+		    if (event == XMLStreamConstants.START_ELEMENT) {
+			result.append(reader.getElementText());
+		    } else if (event == XMLStreamConstants.CHARACTERS) {
+			result.append(reader.getText());
                     }
                 }
             }
